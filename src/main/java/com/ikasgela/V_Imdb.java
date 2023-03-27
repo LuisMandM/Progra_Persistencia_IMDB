@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 public class V_Imdb {
@@ -64,30 +63,20 @@ public class V_Imdb {
 
     public List<Pelicula> filtrado_Pelicula(int year) {
         List<Pelicula> filtrado = new ArrayList<>();
-        int rank = 1;
+
         for (Pelicula pelicula : peliculas) {
             if (pelicula.getYear() == year) {
-                Pelicula copia = pelicula;
-                copia.setRank(String.valueOf(rank));
-                filtrado.add(copia);
-                rank++;
+                filtrado.add(pelicula);
             }
         }
 
-        LinkedList<Pelicula> top = new LinkedList<>(filtrado);
-        for (Pelicula pelicula : filtrado) {
-            if (pelicula != top.get(0) && Double.parseDouble(pelicula.getRating()) >= Double.parseDouble(top.get(0).getRating())) {
-                Pelicula actual = pelicula;
-                top.remove(pelicula);
-                top.addFirst(actual);
-            }
-        }
-
-
-        List<Pelicula> top_ordenado = ordenar(top);
+        List<Pelicula> top_ordenado = ordenar(filtrado);
         List<Pelicula> top_10 = new ArrayList<>();
-        for (int i = top_ordenado.size() - 2; i > top.size() - 12; i--) {
+        int rank = 1;
+        for (int i = top_ordenado.size() - 2; i > top_ordenado.size() - 12; i--) {
+            top_ordenado.get(i).setRank(String.valueOf(rank));
             top_10.add(top_ordenado.get(i));
+            rank++;
         }
         return top_10;
     }
